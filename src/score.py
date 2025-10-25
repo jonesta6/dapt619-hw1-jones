@@ -129,6 +129,22 @@ def predict_and_save(model, df: pd.DataFrame, out_csv: Path, out_plot: Path):
     out_df.to_csv(out_csv, index=False)
     print(f"Wrote scored CSV to {out_csv}")
 
+# Plot actual vs predicted (using 'waiting' if present)
+    plt.figure(figsize=(6, 4))
+    if "waiting" in out_df.columns:
+        plt.scatter(out_df["waiting"], out_df["predicted_waiting"], alpha=0.7)
+        plt.xlabel("Actual waiting")
+    else:
+        plt.scatter(out_df["eruptions"], out_df["predicted_waiting"], alpha=0.7)
+        plt.xlabel("Eruptions")
+    plt.ylabel("Predicted waiting")
+    plt.title("Geyser: actual vs predicted waiting")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(out_plot, dpi=150)
+    plt.close()
+    print(f"Wrote plot to {out_plot}")
+
 
 def main():
     try:
